@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
     private  NavigationDrawerFragment drawerFragment;
+    private DrawerLayout mDrawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
        drawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
 
-        drawerFragment.setUp(R.id.fragment_navigation_drawer,(DrawerLayout) findViewById(R.id.drawer_layout),toolbar);
+        drawerFragment.setUp(R.id.fragment_navigation_drawer, mDrawerLayout,toolbar);
     }
 
     @Override
@@ -56,8 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(id == android.R.id.home){
-//            drawerFragment.getActivity().;
-            Toast.makeText(this, "how to ??? "+ item.getTitle(),Toast.LENGTH_SHORT).show();
+            mDrawerLayout.openDrawer(Gravity.LEFT);
         }
         return super.onOptionsItemSelected(item);
     }
