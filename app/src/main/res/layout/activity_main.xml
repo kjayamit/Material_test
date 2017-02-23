@@ -18,7 +18,8 @@
         android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:fitsSystemWindows="true"
         app:layout="@layout/fragment_navigation_drawer"
         android:name="com.example.jaya.materialtest.NavigationDrawerFragment"
         tools:layout="@layout/fragment_navigation_drawer" />
-</android.support.v4.widget.DrawerLayout> 
+</android.support.v4.widget.DrawerLayout>

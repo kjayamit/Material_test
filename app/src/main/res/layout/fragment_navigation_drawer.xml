@@ -6,6 +6,13 @@
     tools:context="com.example.jaya.materialtest.NavigationDrawerFragment">
 
     <!-- TODO: Update blank fragment layout -->
+    
+    <ImageView
+        android:layout_width="280dp"
+        android:layout_height="140dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/unnamed" />
+    
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
