@@ -72,10 +72,16 @@ public class NavigationDrawerFragment extends Fragment {
         List<Information> data = new ArrayList<>();
         int[] icons={ R.drawable.checkbox24, R.drawable.mancycling,R.drawable.filterresults};
         String[] title = {"one","two","three"};
-        for(int i=0;i<title.length;i++){
+//        for(int i=0;i<title.length;i++){
+//            Information current = new Information();
+//            current.iconID = icons[i];
+//            current.title = title[i];
+//            data.add(current);
+//        }
+        for(int i=0;i<100;i++){
             Information current = new Information();
-            current.iconID = icons[i];
-            current.title = title[i];
+            current.iconID = icons[i%icons.length];
+            current.title = title[i%title.length];
             data.add(current);
         }
         return data;

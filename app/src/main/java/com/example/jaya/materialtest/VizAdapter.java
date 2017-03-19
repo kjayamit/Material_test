@@ -2,11 +2,13 @@ package com.example.jaya.materialtest;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,8 +22,10 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
 
     private LayoutInflater layoutInflater;
     List<Information> data = Collections.emptyList();
+    Context context;
 
     public VizAdapter(Context context, List<Information> data){
+        this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.data= data;
     }
@@ -29,17 +33,37 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.custom_row,parent,false);
+        Log.d("VivZ" , "onCreateViewHolder called");
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
         Information current = data.get(position);
+        Log.d("VivZ" , "onBindViewHolder called " + position);
         holder.title.setText(current.title);
         holder.icon.setImageResource(current.iconID);
-
+//        holder.icon.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(v.getContext(),"Item at position " + position + " clicked",Toast.LENGTH_SHORT);
+//            }
+//        });
+        holder.icon.setOnClickListener(mClickListener);
+        holder.icon.setTag(holder);
     }
+
+    View.OnClickListener mClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            MyViewHolder holder = (MyViewHolder) view.getTag();
+            int position = holder.getAdapterPosition();
+
+            Toast.makeText(context,"Item at position " + position + " clicked",Toast.LENGTH_LONG);
+        }
+
+    };
 
     @Override
     public int getItemCount() {
