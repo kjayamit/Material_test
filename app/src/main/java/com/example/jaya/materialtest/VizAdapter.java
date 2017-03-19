@@ -31,6 +31,10 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
         this.data= data;
     }
 
+    public void delete(int position){
+        data.remove(position);
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.custom_row,parent,false);
@@ -40,7 +44,7 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         Information current = data.get(position);
         Log.d("VivZ" , "onBindViewHolder called " + position);
         holder.title.setText(current.title);
@@ -66,7 +70,7 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
         return data.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView title;
         ImageView icon;
@@ -75,6 +79,13 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.listText);
             icon = (ImageView) itemView.findViewById(R.id.listIcon);
+            title.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+           delete( getAdapterPosition());
         }
     }
 }
