@@ -1,6 +1,7 @@
 package com.example.jaya.materialtest;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,12 +45,6 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
         Log.d("VivZ" , "onBindViewHolder called " + position);
         holder.title.setText(current.title);
         holder.icon.setImageResource(current.iconID);
-//        holder.icon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(v.getContext(),"Item at position " + position + " clicked",Toast.LENGTH_SHORT);
-//            }
-//        });
         holder.icon.setOnClickListener(mClickListener);
         holder.icon.setTag(holder);
     }
@@ -60,7 +55,8 @@ public class VizAdapter extends RecyclerView.Adapter<VizAdapter.MyViewHolder>{
             MyViewHolder holder = (MyViewHolder) view.getTag();
             int position = holder.getAdapterPosition();
 
-            Toast.makeText(context,"Item at position " + position + " clicked",Toast.LENGTH_LONG);
+
+            Toast.makeText(context,"Item at position " + position + " clicked",Toast.LENGTH_LONG).show();
         }
 
     };
