@@ -10,9 +10,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +69,19 @@ public class NavigationDrawerFragment extends Fragment {
         adapter = new VizAdapter(getActivity(),getData());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), recyclerView, new ClickListener() {
+            @Override
+            public void onCLick(View view, int position) {
+
+                Toast.makeText(getActivity(), "On Click "+ position,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongCLick(View view, int position) {
+                Toast.makeText(getActivity(), " Long Click "+ position,Toast.LENGTH_SHORT).show();
+
+            }
+        }));
         return layout;
     }
 
@@ -143,5 +160,61 @@ public class NavigationDrawerFragment extends Fragment {
     public static String readFromPreferences(Context context, String preferenceName, String defaultValue){
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREF_FILE_NAME,Context.MODE_PRIVATE);
         return sharedPreferences.getString(preferenceName,defaultValue);
+    }
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+        private GestureDetector gestureDetector;
+
+        private ClickListener clickListener;
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener){
+
+            Log.d("VivZ" , "Constructor Invoked");
+
+            this.clickListener=clickListener;
+            gestureDetector = new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
+                @Override
+                public boolean onSingleTapUp(MotionEvent e){
+                    Log.d("VivZ" , "onSingleTapUp Invoked" + e);
+                    return true;
+
+                }
+                @Override
+                public void onLongPress(MotionEvent e){
+                    Log.d("VivZ" , "onLongPress Invoked" + e);
+                    View child = recyclerView.findChildViewUnder(e.getX(),e.getY());
+                    if(child!=null && clickListener!=null){
+                        clickListener.onLongCLick(child,recyclerView.getChildPosition(child));
+                    }
+
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            Log.d("VivZ" , "onInterceptTouchEvent Invoked " + gestureDetector.onTouchEvent(e) + " " + e);
+
+            View child = rv.findChildViewUnder(e.getX(),e.getY());
+            if(child!=null && clickListener!=null && gestureDetector.onTouchEvent(e)){
+                clickListener.onCLick(child,recyclerView.getChildPosition(child));
+            }
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+            Log.d("VivZ" , "onTouchEvent Invoked" + e);
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
+    public static interface ClickListener{
+        public void onCLick(View view, int position);
+        public void onLongCLick(View view, int position);
     }
 }
